@@ -16,8 +16,15 @@ public class MoonLanderGame extends Game
     private boolean isRightPressed;
     private Rocket rocket;
     private GameObject landscape;
+     private boolean isLandscape1Chosen = true;
+     private boolean isLandscape2Chosen = false;
 
     private int score;
+    private void chooseLandscape()
+    {
+
+
+    }
     
     
     public void initialize()
@@ -32,6 +39,7 @@ public class MoonLanderGame extends Game
         isLeftPressed = false;
         isRightPressed = false;
         isGameStopped = false;
+
         createGameObjects();
         drawScene();
         setTurnTimer(50);
@@ -42,16 +50,25 @@ public class MoonLanderGame extends Game
         for (int x = 0; x < WIDTH; x++)
         {
             for (int y = 0; y < HEIGHT; y++) {
-                setCellColor(x, y, Color.GREY);
+                setCellColor(x, y, Color.BLACK);
             }
         }
         landscape.draw(this);
+
         rocket.draw(this);
     }
     private void createGameObjects()
     {
+        //showMessageDialog(Color.ALICEBLUE,"Press Enter for Landscape 1 or press ESC for Landscape 2",Color.BLACK,26);
         rocket = new Rocket(WIDTH/2,0);
-        landscape = new GameObject(0,25,ShapeMatrix.LANDSCAPE);
+        if(isLandscape1Chosen)
+        {
+            landscape = new GameObject(0, 25, ShapeMatrix.LANDSCAPE);
+        }
+        if(isLandscape2Chosen)
+        {
+            landscape = new GameObject(0, 25, ShapeMatrix.LANDSCAPE2f);
+        }
         platform = new GameObject(23, MoonLanderGame.HEIGHT - 1, ShapeMatrix.PLATFORM);
 
     }
@@ -95,8 +112,20 @@ public class MoonLanderGame extends Game
            isRightPressed=true;
            isLeftPressed=false;
        }
-       if(key == Key.SPACE&&isGameStopped)
+     /*  if(key == Key.SPACE&&isGameStopped)
        {
+           createGame();
+       }*/
+       if(key == Key.ENTER&&isGameStopped)
+       {
+           isLandscape1Chosen = true;
+           isLandscape2Chosen = false;
+           createGame();
+       }
+       if(key == Key.ESCAPE&&isGameStopped)
+       {
+           isLandscape2Chosen = true;
+           isLandscape1Chosen = false;
            createGame();
        }
 
@@ -133,7 +162,7 @@ public class MoonLanderGame extends Game
     {
         isGameStopped = true;
         rocket.land();
-        showMessageDialog(Color.PINK,"SUCCES",Color.BLACK,26);
+        showMessageDialog(Color.PINK,"SUCCES \n Press Enter for Landscape 1 \n or press ESC for Landscape 2",Color.BLACK,26);
         stopTurnTimer();
     }
     private void gameOver()
@@ -143,7 +172,7 @@ public class MoonLanderGame extends Game
         rocket.crash();
         score =0;
         setScore(score);
-        showMessageDialog(Color.BLACK,"FAILURE",Color.WHITE,26);
+        showMessageDialog(Color.BLACK,"FAILURE \n Press Enter for Landscape 1 \n or press ESC for Landscape 2",Color.WHITE,26);
         stopTurnTimer();
 
 
